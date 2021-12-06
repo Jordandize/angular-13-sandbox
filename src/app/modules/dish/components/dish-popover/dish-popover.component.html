@@ -1,0 +1,28 @@
+<div
+    class="dish-popover__overlay"
+    [class._invisible]="!visible"
+>
+    <div class="dish-popover__popover">
+        <div class="dish-popover__title">
+            {{ mode.title }}
+        </div>
+        <app-dish-form
+            class="dish-popover__dish-form"
+            [categories]="categories$ | async"
+        ></app-dish-form>
+        <div class="dish-popover__controllers">
+            <button
+                class="dish-popover__controller _primary"
+                (click)="onSubmitClick()"
+            >
+                {{ mode.submitText }}
+            </button>
+            <button
+                class="dish-popover__controller"
+                (click)="close()"
+            >
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

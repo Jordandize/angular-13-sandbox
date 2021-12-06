@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.dish-list-page {
+  &__create-button {
+    width: fit-content;
+  }
+
+  &__dish-card-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 12px;
+    column-gap: 12px;
+    align-items: stretch;
+    margin-top: 32px;
+  }
+}

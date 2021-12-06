@@ -1,0 +1,19 @@
+<button
+    class="dish-list-page__create-button"
+    (click)="onCreateDishClick()"
+>
+    Create Dish
+</button>
+<div class="dish-list-page__dish-card-list">
+    <app-dish-card
+        *ngFor="let dish of dishList$ | async; trackBy: trackById"
+        class="dish-list-page__dish-card"
+        [dish]="dish"
+        (updateClick)="onDishUpdateClick($event)"
+        (deleteClick)="onDishDeleteClick($event)"
+    ></app-dish-card>
+</div>
+<app-dish-popover
+    [(visible)]="isDishPopoverVisible"
+    [(dishToUpdate)]="dishToUpdate"
+></app-dish-popover>

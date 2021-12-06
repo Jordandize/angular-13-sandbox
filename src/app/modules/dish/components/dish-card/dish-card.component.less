@@ -1,0 +1,36 @@
+:host {
+  display: grid;
+  grid-template-areas:
+    "name name"
+    "category category"
+    "tags tags"
+    "update delete";
+  row-gap: 8px;
+  column-gap: 12px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
+.dish-card {
+  &__name {
+    grid-area: name;
+    font-size: 24px;
+  }
+
+  &__category {
+    grid-area: category;
+  }
+
+  &__tags {
+    grid-area: tags;
+  }
+
+  &__update-button {
+    grid-area: update;
+  }
+
+  &__delete-button {
+    grid-area: delete;
+  }
+}

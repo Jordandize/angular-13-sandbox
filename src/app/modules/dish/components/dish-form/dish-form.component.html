@@ -1,0 +1,55 @@
+<ng-container [formGroup]="form">
+    <div
+        class="dish-form__input-wrapper"
+        [class._error]="controls.name.invalid && controls.name.touched"
+    >
+        <div class="dish-form__input-label">
+            Name
+        </div>
+        <input
+            class="dish-form__input"
+            type="text"
+            formControlName="name"
+        >
+    </div>
+    <div 
+        class="dish-form__input-wrapper"
+        [class._error]="controls.category.invalid && controls.category.touched"
+    >
+        <div class="dish-form__input-label">
+            Category
+        </div>
+        <select
+            class="dish-form__input"
+            formControlName="category"
+        >
+            <option></option> 
+            <option
+                *ngFor="let category of categories"
+                [value]="category.id"
+            >
+                {{ category.name }}
+            </option>
+        </select>
+    </div>
+    <div
+        class="dish-form__input-wrapper"
+        [class._error]="controls.tags.invalid && controls.tags.touched"
+    >
+        <div class="dish-form__input-label">
+            Tags
+        </div>
+        <select
+            class="dish-form__input _tags"
+            multiple
+            formControlName="tags"
+        >   
+            <option
+                *ngFor="let tag of ['A', 'B', 'C', 'D', 'E', 'F']"
+                [value]="'Tag ' + tag"
+            >
+                {{ "Tag " + tag }}
+            </option>
+        </select>
+    </div>
+</ng-container>
