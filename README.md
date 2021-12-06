@@ -35,7 +35,7 @@ src
 
 # 2. Описуємо дані
 Дещо спростимо відображення - додамо лише ID, ім'я, посилання на категорію та теги:
-> modules/dish/models/server/dish.model.ts
+> dish.model.ts
 > ```ts
 > export interface Dish {
 >     id: string;
@@ -47,7 +47,7 @@ src
 
 Категорія:
 
-> modules/dish/models/server/category.model.ts
+> category.model.ts
 > ```ts
 > export interface Category {
 >     id: string;
@@ -88,7 +88,7 @@ ng g c modules/dish/pages/dish-list-page
 >         loadChildren: () => import("./modules/dish/dish.>module").then((m) => m.DishModule),
 >     }
 > ];
-```
+> ```
 
 ## 3.2 Створюємо список страв
 
@@ -103,20 +103,21 @@ ng g c modules/dish/pages/dish-list-page
 ng g c modules/dish/components/dish-card
 ```
 Тепер перейдемо до самого списку. Опишемо розмітку:
+
 > dish-list-page.component.html
-```html
-<button class="dish-list-page__create-button" ... >
-    Create Dish
-</button>
-<div class="dish-list-page__dish-card-list">
-    <app-dish-card
-        *ngFor="let dish of dishList$ | async; trackBy: trackById"
-        class="dish-list-page__dish-card"
-        ...
-    ></app-dish-card>
-</div>
-...
-```
+> ```html
+> <button class="dish-list-page__create-button" ... >
+>     Create Dish
+> </button>
+> <div class="dish-list-page__dish-card-list">
+>     <app-dish-card
+>         *ngFor="let dish of dishList$ | async; trackBy: trackById"
+>         class="dish-list-page__dish-card"
+>         ...
+>     ></app-dish-card>
+> </div>
+> ...
+> ```
 
 CSS:
 
@@ -159,7 +160,7 @@ CSS:
 
 Спочатку створимо REST сервіс:
 
-> modules/dish/sercices/server/dish-rest.service
+> dish-rest.service
 > ```ts
 > export class DishRestService {
 > 
@@ -173,7 +174,7 @@ CSS:
 
 Тепер додамо Store сервіс, у якому ми будемо централізовано зберігати дані страв (наприклад, список страв). Також зробимо їх `immutable` за допомогою `Object.freeze()`, щоб ніхто випадково не змінив дані під час роботи з ними. Міняти дані можна лише через інтерфейс Store сервіса.
 
-> modules/dish/sercices/server/dish-store.service
+> dish-store.service
 > ```ts
 > export class DishStoreService {
 > 
