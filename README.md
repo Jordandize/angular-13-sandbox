@@ -36,22 +36,24 @@ src
 # 2. Описуємо дані
 Дещо спростимо відображення - додамо лише ID, ім'я, посилання на категорію та теги:
 > modules/dish/models/server/dish.model.ts
-```ts
-export interface Dish {
-    id: string;
-    name: string;
-    categoryId: string;
-    tags: string[];
-}
-```
+> ```ts
+> export interface Dish {
+>     id: string;
+>     name: string;
+>     categoryId: string;
+>     tags: string[];
+> }
+> ```
+
 Категорія:
+
 > modules/dish/models/server/category.model.ts
-```ts
-export interface Category {
-    id: string;
-    name: string;
-}
-```
+> ```ts
+> export interface Category {
+>     id: string;
+>     name: string;
+> }
+> ```
 
 # 3. Додаємо компоненти
 
@@ -64,27 +66,28 @@ ng g c modules/dish/pages/dish-list-page
 ```
 Та зробимо її доступною для користувача за посиланням `http://localhost:4200/dish/list`, [додавши](https://angular.io/guide/lazy-loading-ngmodules) даний компонент до роута:
 > dish-routing.module.ts
-```ts
-const routes: Routes = [
-    {
-        path: "list",
-        component: DishListPageComponent,
-    },
-    {
-        path: "",
-        pathMatch: "full",
-        redirectTo: "list",
-    }
-];
-```
+> ```ts
+> const routes: Routes = [
+>     {
+>         path: "list",
+>         component: DishListPageComponent,
+>     },
+>     {
+>         path: "",
+>         pathMatch: "full",
+>         redirectTo: "list",
+>     }
+> ];
+> ```
+
 > app-routing.module.ts
-```ts
-const routes: Routes = [
-    {
-        path: "dish",
-        loadChildren: () => import("./modules/dish/dish.module").then((m) => m.DishModule),
-    }
-];
+> ```ts
+> const routes: Routes = [
+>     {
+>         path: "dish",
+>         loadChildren: () => import("./modules/dish/dish.>module").then((m) => m.DishModule),
+>     }
+> ];
 ```
 
 ## 3.2 Створюємо список страв
@@ -116,37 +119,40 @@ ng g c modules/dish/components/dish-card
 ```
 
 CSS:
+
 > dish-list-page.component.less
-```less
-:host {
-  display: flex;
-  flex-direction: column;
-}
+> ```less
+> :host {
+>   display: flex;
+>   flex-direction: column;
+> }
+> 
+> .dish-list-page {
+>   &__create-button { ... }
+> 
+>   &__dish-card-list { ... }
+> }
+> ```
 
-.dish-list-page {
-  &__create-button { ... }
-
-  &__dish-card-list { ... }
-}
-```
 та TS:
+
 > dish-list-page.component.ts
-```ts
-@Component({ ... })
-export class DishListPageComponent {
-    public dishList$: Observable<Dish[]>;
-
-    public onCreateDishClick(): void { }
-
-    public onDishUpdateClick(dish: Dish): void { }
-
-    public onDishDeleteClick(dish: Dish): void { }
-
-    public trackById(index: number, dish: Dish): string {
-        return dish.id;
-    }
-}
-```
+> ```ts
+> @Component({ ... })
+> export class DishListPageComponent {
+>     public dishList$: Observable<Dish[]>;
+> 
+>     public onCreateDishClick(): void { }
+> 
+>     public onDishUpdateClick(dish: Dish): void { }
+> 
+>     public onDishDeleteClick(dish: Dish): void { }
+> 
+>     public trackById(index: number, dish: Dish): string {
+>         return dish.id;
+>     }
+> }
+> ```
 
 # 4. Організовуємо роботу з даними
 Популярним рішенням для роботи з даними на FE є Redux ([NgRx](https://ngrx.io/guide/store)). Проте, щоб спростити завдання, ми будемо використовувати звичайні сервіси Angular та [RxJS](https://www.learnrxjs.io/).
@@ -154,63 +160,63 @@ export class DishListPageComponent {
 Спочатку створимо REST сервіс:
 
 > modules/dish/sercices/server/dish-rest.service
-```ts
-export class DishRestService {
-
-    constructor(private http: HttpClient) { }
-
-    public getDishList(): Observable<Dish[]> { ... }
-
-    ...
-}
-```
+> ```ts
+> export class DishRestService {
+> 
+>     constructor(private http: HttpClient) { }
+> 
+>     public getDishList(): Observable<Dish[]> { ... }
+> 
+>     ...
+> }
+> ```
 
 Тепер додамо Store сервіс, у якому ми будемо централізовано зберігати дані страв (наприклад, список страв). Також зробимо їх `immutable` за допомогою `Object.freeze()`, щоб ніхто випадково не змінив дані під час роботи з ними. Міняти дані можна лише через інтерфейс Store сервіса.
 
 > modules/dish/sercices/server/dish-store.service
-```ts
-export class DishStoreService {
-
-    constructor(private dishRestService: DishRestService) { }
-
-    private dishListSubject = new BehaviorSubject<Dish[]>([]);
-    private dishList$ = this.dishListSubject.asObservable();
-
-    public loadDishList(): void {
-        this.dishRestService.getDishList().subscribe((dishList: Dish[]) => {
-            this.setDishList(dishList);
-        });
-    }
-
-    public getDishList(): Observable<Dish[]> {
-        return this.dishList$;
-    }
-
-    private setDishList(dishList: Dish[]): void {
-        this.dishListSubject.next(<Dish[]> Object.freeze(dishList));
-    }
-    
-}
-```
+> ```ts
+> export class DishStoreService {
+> 
+>     constructor(private dishRestService: DishRestService) { }
+> 
+>     private dishListSubject = new BehaviorSubject<Dish[]>([]);
+>     private dishList$ = this.dishListSubject.asObservable();
+> 
+>     public loadDishList(): void {
+>         this.dishRestService.getDishList().subscribe((dishList: Dish[]) => {
+>             this.setDishList(dishList);
+>         });
+>     }
+> 
+>     public getDishList(): Observable<Dish[]> {
+>         return this.dishList$;
+>     }
+> 
+>     private setDishList(dishList: Dish[]): void {
+>         this.dishListSubject.next(<Dish[]> Object.freeze(dishList));
+>     }
+>     
+> }
+> ```
 
 Додамо Store сервіс до нашого `dish-list-page.component.ts` компоненту:
 
 >   dish-list-page.component.ts
-```ts
-export class DishListPageComponent implements OnInit {
-
-    constructor(private dishStoreService: DishStoreService) { }
-
-    public dishList$: Observable<Dish[]>;
-
-    public ngOnInit(): void {
-        this.dishStoreService.loadDishList();
-        this.dishList$ = this.dishStoreService.getDishList();
-    }
-    
-    ...
-}
-```
+> ```ts
+> export class DishListPageComponent implements OnInit {
+> 
+>     constructor(private dishStoreService: DishStoreService) { }
+> 
+>     public dishList$: Observable<Dish[]>;
+> 
+>     public ngOnInit(): void {
+>         this.dishStoreService.loadDishList();
+>         this.dishList$ = this.dishStoreService.getDishList();
+>     }
+>     
+>     ...
+> }
+> ```
 `ngOnInit` - майже завжди найкраще місце для ініціалізації даних.
 
 `loadDishList()` - викликаємо один раз на сторінці, якщо безпосередньо їй, або будь-якому вкладеному компоненту сторінки необхідний список страв. Так ми можемо бути впевнені, що кожного разу, коли користувач потрапляє за адресом `/dish/list`, буде гарантовано відправлено запит на отримання списку страв. Щоб "перезавантажити" список (наприклад, по кнопці "Refresh"), можемо просто повторно викликати `loadDishList()` метод і все - UI відображення оновиться відповідно до нового списку.
