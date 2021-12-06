@@ -8,7 +8,10 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {
+    BehaviorSubject,
+    Observable,
+} from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DishCard } from '../../models/client/dish-card.model';
 import { Dish } from '../../models/server/dish.model';

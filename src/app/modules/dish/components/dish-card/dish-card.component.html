@@ -1,21 +1,23 @@
-<div class="dish-card__name">
-    {{ dish.name }}
-</div>
-<div class="dish-card__category">
-    Category: {{ dish.categoryId }}
-</div>
-<div class="dish-card__tags">
-    {{ dish.tags }}
-</div>
-<button
-    class="dish-card__update-button"
-    (click)="updateClick.emit(dish)"
->
-    Update
-</button>
-<button
-    class="dish-card__delete-button"
-    (click)="deleteClick.emit(dish)"
->
-    Delete
-</button>
+<ng-container *ngrxLet="dishCard$ as dishCard">
+    <div class="dish-card__name">
+        {{ dishCard.name }}
+    </div>
+    <div class="dish-card__category">
+        Category: {{ dishCard.category }}
+    </div>
+    <div class="dish-card__tags">
+        Tags: {{ dishCard.tagsText || '-' }}
+    </div>
+    <button
+        class="dish-card__update-button"
+        (click)="updateClick.emit(dish)"
+    >
+        Update
+    </button>
+    <button
+        class="dish-card__delete-button"
+        (click)="deleteClick.emit(dish)"
+    >
+        Delete
+    </button>
+</ng-container>

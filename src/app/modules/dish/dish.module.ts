@@ -6,6 +6,7 @@ import { DishCardComponent } from './components/dish-card/dish-card.component';
 import { DishFormComponent } from './components/dish-form/dish-form.component';
 import { DishPopoverComponent } from './components/dish-popover/dish-popover.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         CommonModule,
         DishRoutingModule,
         ReactiveFormsModule,
+        ReactiveComponentModule,
     ]
 })
 export class DishModule { }
